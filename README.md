@@ -84,6 +84,17 @@ The *Pico W* doesn't have a reset button, which means there are two alternatives
 This example use [bulma](https://bulma.io) as its framework. I chose it as I wanted a CSS-only framework and *bulma* was the first one, that I found, which made sense. That said, it is huge for an embedded microcontroller at 206kB. That is almost 25% of the entire file storage capacity of the Pico W. Going forward, I won't use it. I also won't invest any time changing it for this project.
 
 ## Automation to Copy Project to Board
-The program list_walk will copy all required program files to the board.
+The program *mpbuild* will copy all required program files to the board. The program uses *files.txt* to identify which files to copy based on the first character in the line:
+* '*#*' - comment line, line is ignored
+* '*/*' - directory, a mkdir is executed. This line must be before any files which need to be copied into the directory.
+* '*+*' - main program file, it will be copied into *main.py* to execute upon reset
+* No special characters (just the file name), file copied over to board
+
+The program uses pyboard.py from mpremote (installed via pip), which means the PYBOARD_DEVICE environmental variable must be set. See [here](https://docs.micropython.org/en/latest/reference/pyboard.py.html#running-a-command-on-the-device).
 
 ## Tool to Erase Pico LittleFS filesystem
+Based on a [file by @jimmo](https://github.com/jimmo/dotfiles/blob/master/common/home/.config/mpremote/config.py), I am using his recommended method of erasing all of the files on a Pico. It is in my [config file](https://wellys.com/posts/rp2040_mpremote/#config) or you can use this command:
+```py
+mpremote exec --no-follow  "import os, machine, rp2; os.umount('/'); bdev = rp2.Flash(); os.VfsLfs2.mkfs(bdev, progsize=256); vfs = os.VfsLfs2(bdev, progsize=256); os.mount(vfs, '/'); machine.reset()"
+```
+**IT WILL ERASE ALL OF YOUR PROGRAM FILES ON YOUR PICO!!** It will not delete the MicroPython uf2 file.

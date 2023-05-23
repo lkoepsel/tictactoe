@@ -1,16 +1,18 @@
 #!/usr/bin/env python3
-# requires an files.txt file in the current directory
+# requires files.txt file in the current directory
 # lines starting with '#' are comments and ignored
 # lines starting with '/' are directories and are created
+# 1 line starting with '+' will be copied to main.py
 # directory lines must appear prior to the files in the directories
 # all other lines are considered valid files in the current directory
+# PYBOARD_DEVICE environmental variable must be set to board
 
-# pyboard might need to be copied from the micropython/tools folder on GH
 
 import argparse
 import re
-import pyboard
+from mpremote.pyboard import Pyboard
 import sys
+import os
 
 
 def show_progress_bar(size, total_size, op="copying"):
@@ -35,6 +37,7 @@ def show_progress_bar(size, total_size, op="copying"):
 
 folder = re.compile(r'^/')
 comment = re.compile(r'^#')
+main_prog = re.compile(r'^\+')
 
 parser = argparse.ArgumentParser(description='''Reads names of files from
     files.txt file in current folder. Copies files to attached MicroPython
@@ -43,14 +46,15 @@ parser = argparse.ArgumentParser(description='''Reads names of files from
 ''')
 parser.add_argument('-e', "--execute", action='store_true', default=False,
                     dest='execute',
-                    help='print all attributes found of book')
+                    help='required to copy the files to the board')
 parser.add_argument('-v', "--verbose", action='store_true', default=False,
                     dest='verbose',
                     help='show file names as action is performed')
 
 args = parser.parse_args()
 
-pyb = pyboard.Pyboard('/dev/cu.usbmodem3101', 115200)
+
+pyb = Pyboard(os.environ['PYBOARD_DEVICE'], 115200)
 pyb.enter_raw_repl()
 with open('files.txt', 'r') as files:
     file_list = files.readlines()
@@ -59,7 +63,7 @@ for file in file_list:
     if args.verbose:
         print(f"{file.strip()}")
     # line begins with a slash, create a dir using the following text
-    if folder.match(file):
+    if folder.match(file) and args.execute:
         d = file.strip()
         pyb.fs_mkdir(d)
 
@@ -67,8 +71,13 @@ for file in file_list:
     elif comment.match(file):
         continue
 
+    # line begins with a +, copy it to main.py
+    elif main_prog.match(file) and args.execute:
+        s = file[1:].strip()
+        pyb.fs_put(s, 'main.py', progress_callback=show_progress_bar)
+
     # all other lines are assumed to be valid files to copy to board
-    else:
+    elif args.execute:
         s = file.strip()
         pyb.fs_put(s, s, progress_callback=show_progress_bar)
 
