@@ -79,3 +79,11 @@ I've found several programs on the Mac which won't work with a Pico (*when it is
 
 ## Resetting the Pico
 The *Pico W* doesn't have a reset button, which means there are two alternatives. First, power cycle the Pico by removing the USB cable or second, add a reset button. I find the second method preferable and have described the process [here](https://wellys.com/posts/rp2040_micropython_1/#reset).
+
+## Program Size
+This example use [bulma](https://bulma.io) as its framework. I chose it as I wanted a CSS-only framework and *bulma* was the first one, that I found, which made sense. That said, it is huge for an embedded microcontroller at 206kB. That is almost 25% of the entire file storage capacity of the Pico W. Going forward, I won't use it. I also won't invest any time changing it for this project.
+
+## Automation to Copy Project to Board
+The program list_walk will copy all required program files to the board.
+
+## Tool to Erase Pico LittleFS filesystem

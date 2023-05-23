@@ -1,0 +1,19 @@
+# line starting w / will create a directory, place prior to list of files
+/templates
+/utemplate
+bulma.min.css
+computer.svg
+config.py
+draw.html
+lost.html
+microdot.py
+microdot_utemplate.py
+secrets.py
+templates/index.html
+utemplate/compiled.py
+utemplate/recompile.py
+utemplate/source.py
+wlan.py
+won.html
+# Notes:
+# tictactoe_v1 must be copied to main.py - mpr fs cp tictactoe_v1.py :main.py
