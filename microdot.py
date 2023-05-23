@@ -1046,7 +1046,7 @@ class Microdot():
         """
         raise HTTPException(status_code, reason)
 
-    def run(self, host='0.0.0.0', port=5001, debug=False, ssl=None):
+    def run(self, host='0.0.0.0', port=5000, debug=False, ssl=None):
         """Start the web server. This function does not normally return, as
         the server enters an endless listening loop. The :func:`shutdown`
         function provides a method for terminating the server gracefully.
@@ -1059,7 +1059,7 @@ class Microdot():
                      for requests only on the internal networking interface of
                      the host.
         :param port: The port number to listen for requests. The default is
-                     port 5000. (on MBP 5001 LK 230504)
+                     port 5000.
         :param debug: If ``True``, the server logs debugging information. The
                       default is ``False``.
         :param ssl: An ``SSLContext`` instance or ``None`` if the server should

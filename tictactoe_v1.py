@@ -157,4 +157,4 @@ def computer_svg(request):
 
 
 init()
-app.run(debug=True)
+app.run(port=5001, debug=True)
