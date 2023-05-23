@@ -1,4 +1,5 @@
 # line starting w / will create a directory, place prior to list of files
+# 1 line starting with '+' will be copied to main.py
 /templates
 /utemplate
 bulma.min.css
@@ -15,5 +16,4 @@ utemplate/recompile.py
 utemplate/source.py
 wlan.py
 won.html
-# Notes:
-# tictactoe_v1 must be copied to main.py - mpr fs cp tictactoe_v1.py :main.py
++tictactoe_v1.py
