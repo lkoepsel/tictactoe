@@ -112,32 +112,31 @@ def index(request):
             elif won:
                 return send_file('./won.html')
             else:
-                return render_template('index.html',
-                                       marks=marks)
+                return render_template('index.html', marks)
         elif 'play' in request.form.keys():
             init()
             if request.form['play'] == 'Play Again?':
-                return render_template('index.html', marks=marks)
+                return render_template('index.html', marks)
     else:
-        return render_template('index.html', marks=marks)
+        return render_template('index.html', marks)
 
 
 @app.post('/won.html')
 def won_post(request):
     init()
-    return render_template('index.html', marks=marks)
+    return render_template('index.html', marks)
 
 
 @app.post('/lost.html')
 def lost_post(request):
     init()
-    return render_template('index.html', marks=marks)
+    return render_template('index.html', marks)
 
 
 @app.post('/draw.html')
 def draw_post(request):
     init()
-    return render_template('index.html', marks=marks)
+    return render_template('index.html', marks)
 
 
 @app.route('bulma.min.css')
